@@ -1,12 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Node.js File Server</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File Upload</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <h1>Welcome to the Node.js File Server</h1>
+  <div class="container">
+    <h1>Upload Files</h1>
+    <p>Upload documents you want to share with your team</p>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+      <div class="dropzone" id="dropzone">
+        <p>Drag and drop files here<br> - OR - </p>
+        <input type="file" name="file" id="fileInput" hidden />
+        <button type="button" id="browseBtn">Browse Files</button>
+      </div>
+    </form>
+
+    <div id="message"></div>
+
+    <h2>Uploaded Files</h2>
+    <ul id="fileList"></ul>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const browseBtn = document.getElementById('browseBtn');
+    const fileList = document.getElementById('fileList');
+    const message = document.getElementById('message');
+
+    browseBtn.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        fetch('/upload', { method: 'POST', body: formData })
+          .then(res => res.json())
+          .then(data => {
+            if (data.error) {
+              showMessage(data.error, true);
+            } else {
+              showMessage('✅ File uploaded successfully!');
+              loadFiles();
+            }
+          })
+          .finally(() => fileInput.value = '');
+      }
+    });
+
+    function loadFiles() {
+      fetch('/files')
+        .then(res => res.json())
+        .then(files => {
+          fileList.innerHTML = '';
+          files.forEach(file => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="/uploads/${file}" download>${file}</a>`;
+            fileList.appendChild(li);
+          });
+        });
+    }
+
+    function showMessage(text, isError = false) {
+      message.textContent = text;
+      message.style.color = isError ? 'red' : '#22b18c';
+      message.style.display = 'block';
+      setTimeout(() => {
+        message.style.display = 'none';
+      }, 3000);
+    }
+
+    loadFiles();
+  </script>
 </body>
 </html>

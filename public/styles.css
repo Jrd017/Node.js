@@ -1,7 +1,69 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
-    text-align: center;
-    padding-top: 50px;
+  font-family: Arial, sans-serif;
+  background: #f5fdfb;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  width: 600px;
+  max-width: 100%;
+  text-align: center;
+}
+
+h1 {
+  color: #22b18c;
+  margin-bottom: 5px;
+}
+
+p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.dropzone {
+  border: 2px dashed #22b18c;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 20px;
+}
+
+button {
+  background: #22b18c;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1a8e70;
+}
+
+#message {
+  margin: 10px 0;
+  font-weight: bold;
+  display: none;
+}
+
+#fileList {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+#fileList li {
+  margin: 8px 0;
+}
+
+#fileList a {
+  color: #22b18c;
+  text-decoration: none;
 }
